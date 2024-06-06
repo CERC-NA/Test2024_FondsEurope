@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        #map {
+            width: 1018px;
+            height: 882px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/L.Control.Layers.Tree.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/DepNA_0.js"></script>
+        <script src="data/Etape2_Plateformes_NA_AvecPfTransit2_1.js"></script>
+        <script src="data/Pfremploi_2.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[39.40155984924226,-6.964869215903254],[51.83717401439748,13.688665171237648]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        document.querySelector(".leaflet-popup-pane").addEventListener("load", function(event) {
+          var tagName = event.target.tagName,
+            popup = map._popup;
+          // Also check if flag is already set.
+          if (tagName === "IMG" && popup && !popup._updated) {
+            popup._updated = true; // Set flag to prevent looping.
+            popup.update();
+          }
+        }, true);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        function pop_DepNA_0(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['qc_id'] !== null ? autolinker.link(feature.properties['qc_id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['nom_m'] !== null ? autolinker.link(feature.properties['nom_m'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['nom'] !== null ? autolinker.link(feature.properties['nom'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['insee_dep'] !== null ? autolinker.link(feature.properties['insee_dep'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['insee_reg'] !== null ? autolinker.link(feature.properties['insee_reg'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_DepNA_0_0() {
+            return {
+                pane: 'pane_DepNA_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(196,60,57,1.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_DepNA_0');
+        map.getPane('pane_DepNA_0').style.zIndex = 400;
+        map.getPane('pane_DepNA_0').style['mix-blend-mode'] = 'normal';
+        var layer_DepNA_0 = new L.geoJson(json_DepNA_0, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_DepNA_0',
+            layerName: 'layer_DepNA_0',
+            pane: 'pane_DepNA_0',
+            onEachFeature: pop_DepNA_0,
+            style: style_DepNA_0_0,
+        });
+        bounds_group.addLayer(layer_DepNA_0);
+        map.addLayer(layer_DepNA_0);
+        function pop_Etape2_Plateformes_NA_AvecPfTransit2_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['qc_id'] !== null ? autolinker.link(feature.properties['qc_id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['identifiant_cerc'] !== null ? autolinker.link(feature.properties['identifiant_cerc'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['center_lon'] !== null ? autolinker.link(feature.properties['center_lon'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['center_lat'] !== null ? autolinker.link(feature.properties['center_lat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['aa_meters'] !== null ? autolinker.link(feature.properties['aa_meters'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['aa_mode'] !== null ? autolinker.link(feature.properties['aa_mode'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['total_pop'] !== null ? autolinker.link(feature.properties['total_pop'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['layer'] !== null ? autolinker.link(feature.properties['layer'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['path'] !== null ? autolinker.link(feature.properties['path'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['identifiant_fichiersource'] !== null ? autolinker.link(feature.properties['identifiant_fichiersource'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['source'] !== null ? autolinker.link(feature.properties['source'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['nom_plateforme'] !== null ? autolinker.link(feature.properties['nom_plateforme'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['adresse'] !== null ? autolinker.link(feature.properties['adresse'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cp'] !== null ? autolinker.link(feature.properties['cp'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ville'] !== null ? autolinker.link(feature.properties['ville'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['code_ze'] !== null ? autolinker.link(feature.properties['code_ze'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['libelle_ze'] !== null ? autolinker.link(feature.properties['libelle_ze'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['type_maillage'] !== null ? autolinker.link(feature.properties['type_maillage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['decheterie_pro'] !== null ? autolinker.link(feature.properties['decheterie_pro'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['distributeur'] !== null ? autolinker.link(feature.properties['distributeur'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['decheterie_pub_ouverte'] !== null ? autolinker.link(feature.properties['decheterie_pub_ouverte'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['plateforme_recyclage_di'] !== null ? autolinker.link(feature.properties['plateforme_recyclage_di'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['reamenagement_carriere'] !== null ? autolinker.link(feature.properties['reamenagement_carriere'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['transit_inertes'] !== null ? autolinker.link(feature.properties['transit_inertes'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['tri_preparationvalo_inertes'] !== null ? autolinker.link(feature.properties['tri_preparationvalo_inertes'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['categorie_plateforme'] !== null ? autolinker.link(feature.properties['categorie_plateforme'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['detailcatégorie_installationtransit'] !== null ? autolinker.link(feature.properties['detailcatégorie_installationtransit'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['transit_inertes_pointdepotnegoce'] !== null ? autolinker.link(feature.properties['transit_inertes_pointdepotnegoce'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['transit_inertes_plateformeportuaire'] !== null ? autolinker.link(feature.properties['transit_inertes_plateformeportuaire'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_Etape2_Plateformes_NA_AvecPfTransit2_1_0() {
+            return {
+                pane: 'pane_Etape2_Plateformes_NA_AvecPfTransit2_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(232,113,141,1.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Etape2_Plateformes_NA_AvecPfTransit2_1');
+        map.getPane('pane_Etape2_Plateformes_NA_AvecPfTransit2_1').style.zIndex = 401;
+        map.getPane('pane_Etape2_Plateformes_NA_AvecPfTransit2_1').style['mix-blend-mode'] = 'normal';
+        var layer_Etape2_Plateformes_NA_AvecPfTransit2_1 = new L.geoJson(json_Etape2_Plateformes_NA_AvecPfTransit2_1, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Etape2_Plateformes_NA_AvecPfTransit2_1',
+            layerName: 'layer_Etape2_Plateformes_NA_AvecPfTransit2_1',
+            pane: 'pane_Etape2_Plateformes_NA_AvecPfTransit2_1',
+            onEachFeature: pop_Etape2_Plateformes_NA_AvecPfTransit2_1,
+            style: style_Etape2_Plateformes_NA_AvecPfTransit2_1_0,
+        });
+        bounds_group.addLayer(layer_Etape2_Plateformes_NA_AvecPfTransit2_1);
+        map.addLayer(layer_Etape2_Plateformes_NA_AvecPfTransit2_1);
+        function pop_Pfremploi_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Nom struct</th>\
+                        <td>' + (feature.properties['Nom struct'] !== null ? autolinker.link(feature.properties['Nom struct'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Adresse'] !== null ? autolinker.link(feature.properties['Adresse'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">CP</th>\
+                        <td class="visible-with-data" id="CP">' + (feature.properties['CP'] !== null ? autolinker.link(feature.properties['CP'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Commune'] !== null ? autolinker.link(feature.properties['Commune'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Départeme</strong><br />' + (feature.properties['Départeme'] !== null ? autolinker.link(feature.properties['Départeme'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Site_inter'] !== null ? autolinker.link(feature.properties['Site_inter'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="Num_tel_pf"colspan="2"><strong>Num_tel_pf</strong><br />' + (feature.properties['Num_tel_pf'] !== null ? autolinker.link(feature.properties['Num_tel_pf'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_Pfremploi_2_0(feature) {
+            switch(String(feature.properties['q2wHide_Alanyse-Ca'])) {
+                case 'Catégorie 1':
+                    return {
+                pane: 'pane_Pfremploi_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(209,89,15,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Catégorie 2':
+                    return {
+                pane: 'pane_Pfremploi_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(79,236,202,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Catégorie 3':
+                    return {
+                pane: 'pane_Pfremploi_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(71,71,222,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'En projet':
+                    return {
+                pane: 'pane_Pfremploi_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(101,208,24,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_Pfremploi_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(211,97,188,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Pfremploi_2');
+        map.getPane('pane_Pfremploi_2').style.zIndex = 402;
+        map.getPane('pane_Pfremploi_2').style['mix-blend-mode'] = 'normal';
+        var layer_Pfremploi_2 = new L.geoJson(json_Pfremploi_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Pfremploi_2',
+            layerName: 'layer_Pfremploi_2',
+            pane: 'pane_Pfremploi_2',
+            onEachFeature: pop_Pfremploi_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Pfremploi_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Pfremploi_2);
+        map.addLayer(layer_Pfremploi_2);
+        setBounds();
+        </script>
+    </body>
+</html>
